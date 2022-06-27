@@ -23,11 +23,6 @@ I've been playing with managing my spotify playlists in terraform. Start out as 
   * `cp config.yaml.example config.yaml`
   * Fill it out with the values from the Developer Dashboard
   * Add the redirect URI as the AUTH_URL
-  * Run the auth proxy container
-  ```shell
-  docker run --rm -it -p 27228:27228 --env-file ./.env -e \
-  SPOTIFY_CLIENT_REDIRECT_URI=http://localhost:27228/spotify_callback \
-  ghcr.io/conradludgate/spotify-auth-proxy
   ```
 ## Usage
 There is only one command right now. Others could easily be added, but this is the MVP that does what I need to start.
