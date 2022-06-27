@@ -1,5 +1,5 @@
 {
-  description = "A Spotify Search tool written with BubbleTea";
+  description = "A Spotify Search tool";
 
   # Nixpkgs / NixOS version to use.
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -48,7 +48,7 @@
             # remeber to bump this hash when your dependencies change.
             #vendorSha256 = pkgs.lib.fakeSha256;
 
-            vendorSha256 = "sha256-pQpattmS9VmO3ZIQUFn66az8GSmB4IvYhTTCFn6SUmo=";
+            vendorSha256 = "sha256-ntbNembKU9n3aJhXUHFICYkZ2SrLUAK+4JH4TmoTZxs=";
           };
         });
 
