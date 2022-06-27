@@ -28,8 +28,7 @@ OPTIONS:
 ### JSON Output
 This matches how I add tracks to my spotify playlists. Not all of the info is used by terraform. It only needs the `track_id`. But I like knowing what song is associated with the track. I used to hand jam this mess. It was pain.
 [One of my playlists](https://github.com/JamesAtIntegratnIO/spotify-playlist/blob/main/myJams.tf)
-```JSON
-./spotify-search track -q 5 -f JSON hotel california
+```
 {
   artist      = "Eagles",
   album       = "Hotel California (2013 Remaster)"
