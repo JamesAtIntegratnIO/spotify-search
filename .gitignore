@@ -25,4 +25,4 @@ config.yaml
 
 # Ignore the build output
 spotify-search
-result/*
+result/
