@@ -37,6 +37,8 @@
             # In 'nix develop', we don't need a copy of the source tree
             # in the Nix store.
             src = ./.;
+            exclude = [ ./flake.nix ./flake.lock ./config.yaml.example ./.gitignore ./README.md];
+
 
             # This hash locks the dependencies of this package. It is
             # necessary because of how Go requires network access to resolve
