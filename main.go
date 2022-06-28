@@ -5,9 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
+	"text/template"
 
 	"github.com/zmb3/spotify/v2"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
@@ -42,7 +45,13 @@ type Track struct {
 	Err        error
 }
 
+type Search struct {
+	Song   string
+	Format string
+}
+
 var config = *c.SetupConfig()
+var t *template.Template
 
 var auth = spotifyauth.New(spotifyauth.WithRedirectURL(config.AUTH_URL))
 
@@ -83,6 +92,47 @@ func main() {
 							fmt.Println(msg)
 						}
 					}
+					return nil
+				},
+			},
+			{
+				Name:    "webserver",
+				Aliases: []string{"web"},
+				Usage:   "search from the comfort of your browser",
+				Flags: []cli.Flag{
+					&cli.IntFlag{
+						Name:        "port",
+						Aliases:     []string{"p"},
+						Usage:       "The `PORT` to run the webserver on",
+						DefaultText: "8080",
+					},
+				},
+				Action: func(cCtx *cli.Context) error {
+					tmpl := template.Must(template.ParseFiles("templates/index.html"))
+
+					http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+						if r.Method != http.MethodPost {
+							tmpl.Execute(w, nil)
+							return
+						}
+
+						details := Search{
+							Song:   r.FormValue("track"),
+							Format: r.FormValue("format"),
+						}
+						tracks, err := trackSearch(details.Song)
+						if err != nil {
+							fmt.Println(err)
+						}
+						format, _ := strconv.ParseBool(details.Format)
+
+						tmpl.Execute(w, struct {
+							Success bool
+							Format  bool
+							Tracks  []Track
+						}{true, format, tracks})
+					})
+					http.ListenAndServe(":8080", nil)
 					return nil
 				},
 			},
