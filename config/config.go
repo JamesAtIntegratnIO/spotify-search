@@ -15,6 +15,7 @@ type Configuration struct {
 func SetupConfig() *Configuration {
 	viper.SetConfigName("config")
 	viper.AddConfigPath(".")
+	viper.AddConfigPath("$HOME/.config/spotify-search/")
 	viper.AutomaticEnv()
 	viper.SetConfigType("yml")
 	var configuration Configuration
