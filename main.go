@@ -35,7 +35,7 @@ func main() {
 		Commands: []*cli.Command{
 			{
 				Name:    "track",
-				Aliases: []string{"s"},
+				Aliases: []string{"t"},
 				Usage:   "Search for a track by title\nEx:spotify-search track -qty 15 -format JSON hotel california",
 				Flags: []cli.Flag{
 					&cli.IntFlag{
@@ -78,9 +78,14 @@ func main() {
 					},
 				},
 				Action: func(cCtx *cli.Context) error {
+					port := 8080
+					if cCtx.NumFlags() > 0 {
+						port = cCtx.Int("port")
+					}
 					tmpl := template.Must(template.ParseFiles("templates/index.html"))
-
+					fmt.Printf("Web server running at: http://localhost:%d", port)
 					http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+
 						if r.Method != http.MethodPost {
 							tmpl.Execute(w, nil)
 							return
@@ -102,7 +107,8 @@ func main() {
 							Tracks  []Track
 						}{true, format, tracks})
 					})
-					http.ListenAndServe(":8080", nil)
+					http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+
 					return nil
 				},
 			},

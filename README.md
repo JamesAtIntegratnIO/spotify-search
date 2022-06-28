@@ -4,7 +4,7 @@ Search for Track info for easier adding to your terraformed spotify playlists.
 ## Back Story
 I've been playing with managing my spotify playlists in terraform. Start out as an excersize to learn more about terraform and get better at it. Turned into something I enjoy doing. The biggest pain point was finding the `track_id` to add the track. So I wrote this.
 
-## Setup
+## Setup locally
 *  Login to the [Spotify Developer
    Dashboard](https://developer.spotify.com/dashboard/login)
 *  Select `Create An App`
@@ -29,19 +29,29 @@ There is only one command right now. Others could easily be added, but this is t
 
 Install it, then use the command as seen below.
 > TODO: Add actual install instructions
+* Copy the `config.yaml.example` to ~`/.config/spotify-search/config.yaml`
+* Update all your values
+* `go install github.com/jamesatintegratnio/spotify-search
 
 ### Help text
 ```
 NAME:
-   spotify-search track - Search for a track by title
-                          Ex:spotify-search track -qty 15 -format JSON hotel california
+   Spotify Search - A new cli application
 
 USAGE:
-   spotify-search track [command options] [arguments...]
+   spotify-search [global options] command [command options] [arguments...]
 
-OPTIONS:
-   --format JSON, -f JSON   the format you want the results in, either JSON or `pretty` (default: pretty)
-   --qty NUMBER, -q NUMBER  the NUMBER of results you want to see (default: 5)
+DESCRIPTION:
+   A tool for searching for spotify track info.
+
+COMMANDS:
+   track, t  Search for a track by title
+Ex:spotify-search track -qty 15 -format JSON hotel california
+   webserver, web  search from the comfort of your browser
+   help, h         Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --help, -h  show help (default: false)
 ```
 
 ### JSON Output
