@@ -28,7 +28,6 @@ I've been playing with managing my spotify playlists in terraform. Start out as 
 There is only one command right now. Others could easily be added, but this is the MVP that does what I need to start.
 
 Install it, then use the command as seen below.
-> TODO: Add actual install instructions
 * Copy the `config.yaml.example` to ~`/.config/spotify-search/config.yaml`
 * Update all your values
 * `go install github.com/jamesatintegratnio/spotify-search
