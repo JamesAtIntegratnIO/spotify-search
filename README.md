@@ -23,7 +23,7 @@ I've been playing with managing my spotify playlists in terraform. Start out as 
   * `cp config.yaml.example config.yaml`
   * Fill it out with the values from the Developer Dashboard
   * Add the redirect URI as the AUTH_URL
-  ```
+
 ## Usage
 There is only one command right now. Others could easily be added, but this is the MVP that does what I need to start.
 
