@@ -90,6 +90,34 @@ func main() {
 				},
 			},
 			{
+				Name:    "toptracks",
+				Aliases: []string{"tt"},
+				Usage:   "Get the top tracks of `ARTISTS NAME`",
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "format",
+						Aliases:     []string{"f"},
+						Usage:       "the format you want the results in, either `JSON` or `pretty`",
+						DefaultText: "pretty",
+					},
+				},
+				Action: func(cCtx *cli.Context) error {
+					format := "pretty"
+					if cCtx.String("format") != "" {
+						format = cCtx.String("format")
+					}
+					topTracks, err := getTopTracksByArtist(strings.Join(cCtx.Args().Slice(), " "))
+					if err != nil {
+						fmt.Println(err)
+					}
+					msg := TrackView(topTracks, 10, format)
+					for _, msg := range msg {
+						fmt.Println(msg)
+					}
+					return nil
+				},
+			},
+			{
 				Name:    "webserver",
 				Aliases: []string{"web"},
 				Usage:   "search from the comfort of your browser",
