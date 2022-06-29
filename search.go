@@ -31,6 +31,20 @@ func Search(searchString string, searchType string) (result *spotify.SearchResul
 		return client.Search(ctx, searchString, spotify.SearchTypeTrack)
 	case "album":
 		return client.Search(ctx, searchString, spotify.SearchTypeAlbum)
+	case "track_id":
+		track, err := client.GetTrack(ctx, spotify.ID(searchString))
+		if err != nil {
+			return nil, err
+		}
+		var tracks []spotify.FullTrack
+		tracks = append(tracks, *track)
+		trackPage := spotify.FullTrackPage{
+			Tracks: tracks,
+		}
+		searchResult := spotify.SearchResult{
+			Tracks: &trackPage,
+		}
+		return &searchResult, nil
 	default:
 		err = errors.New("Invalid search type: Please use 'artist', 'track', or 'album'")
 		return nil, err

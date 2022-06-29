@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"strings"
+
+	"github.com/zmb3/spotify/v2"
 )
 
 type Album struct {
@@ -36,14 +38,7 @@ func TrackSearch(trackName string) ([]Track, error) {
 	}
 
 	for _, strack := range res.Tracks.Tracks {
-		artists := []Artist{}
-		for _, artist := range strack.Artists {
-			a := Artist{
-				ID:   artist.ID.String(),
-				Name: artist.Name,
-			}
-			artists = append(artists, a)
-		}
+		artists := sArtistsToArtists(strack.Artists)
 
 		t := Track{
 			ID:         strack.ID.String(),
@@ -59,6 +54,39 @@ func TrackSearch(trackName string) ([]Track, error) {
 		tracks = append(tracks, t)
 	}
 	return tracks, nil
+}
+
+func TrackIDSearch(trackID string) (Track, error) {
+	res, err := Search(trackID, "track_id")
+	if err != nil {
+		return Track{}, err
+	}
+	artists := sArtistsToArtists(res.Tracks.Tracks[0].Artists)
+	t := Track{
+		ID:         res.Tracks.Tracks[0].ID.String(),
+		Name:       res.Tracks.Tracks[0].Name,
+		PreviewURL: res.Tracks.Tracks[0].PreviewURL,
+		Artists:    artists,
+		Album: Album{
+			Name:    res.Tracks.Tracks[0].Album.Name,
+			ID:      res.Tracks.Tracks[0].Album.ID.String(),
+			Artists: artists,
+		},
+	}
+	return t, nil
+}
+
+type sArtists []spotify.SimpleArtist
+
+func sArtistsToArtists(sArtists sArtists) (artists []Artist) {
+	for _, a := range sArtists {
+		b := Artist{
+			ID:   a.ID.String(),
+			Name: a.Name,
+		}
+		artists = append(artists, b)
+	}
+	return
 }
 
 func TrackView(tracks []Track, qty int, format string) (msgs []string) {

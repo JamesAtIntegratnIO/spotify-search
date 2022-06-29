@@ -66,6 +66,30 @@ func main() {
 				},
 			},
 			{
+				Name:    "track_id",
+				Aliases: []string{"tid"},
+				Usage:   "Search for track details of a `TRACK ID`",
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "format",
+						Aliases:     []string{"f"},
+						Usage:       "the format you want the results in, either `JSON` or `pretty`",
+						DefaultText: "pretty",
+					},
+				},
+				Action: func(cCtx *cli.Context) error {
+					track, err := TrackIDSearch(cCtx.Args().First())
+					if err != nil {
+						fmt.Println(err)
+					}
+					msg := TrackView([]Track{track}, 1, cCtx.String("format"))
+					for _, msg := range msg {
+						fmt.Println(msg)
+					}
+					return nil
+				},
+			},
+			{
 				Name:    "webserver",
 				Aliases: []string{"web"},
 				Usage:   "search from the comfort of your browser",
