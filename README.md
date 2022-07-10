@@ -49,8 +49,10 @@ DESCRIPTION:
    A tool for searching for spotify track info.
 
 COMMANDS:
-   track, t  Search for a track by title
+   toptracks, tt  Get the top tracks of `ARTISTS NAME`
+   track, t       Search for a track by title
 Ex:spotify-search track -qty 15 -format JSON hotel california
+   track_id, tid   Search for track details of a `TRACK ID`
    webserver, web  search from the comfort of your browser
    help, h         Shows a list of commands or help for one command
 
