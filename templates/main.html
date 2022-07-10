@@ -1,0 +1,26 @@
+{{define "main"}}
+  {{template "header" .}}
+  {{if .Success}}
+    <div>
+      {{template "results" .}}
+      
+        
+    </div>
+  {{else}}
+    <div>
+      <h2>Search for a Song</h2>
+      <form method="POST">
+        <label>Song Title</label>
+        <input type="text" name="track"><br />
+        <label>Format</label>
+        <select id="format" name="format">
+          <option value="true">Pretty</option>
+          <option vlaue="false">JSON</option>
+        </select>
+        <input type="submit">
+      </form>
+    </div>
+  {{end}}
+  {{template "footer" .}}
+{{end}}
+

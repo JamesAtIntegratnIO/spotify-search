@@ -1,0 +1,24 @@
+{{define "top_tracks"}}
+  {{template "header" .}}
+  {{if .Success}}
+  <div>
+    {{template "results" .}}
+  </div>
+  {{else}}
+    <div>
+      <h2>Search for Top Tracks of Artist</h2>
+      <form method="POST">
+        <label>Artist</label>
+        <input type="text" name="artist"><br />
+        <label>Format</label>
+        <select id="format" name="format">
+          <option value="true">Pretty</option>
+          <option vlaue="false">JSON</option>
+        </select>
+        <input type="submit">
+      </form>
+    </div>
+  {{end}}
+
+  {{template "footer" .}}
+{{end}}

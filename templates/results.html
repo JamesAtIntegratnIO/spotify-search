@@ -1,0 +1,29 @@
+{{define "results"}}
+  <h2>Results</h2>
+        
+  {{if .Format}}
+    {{range .Tracks}}
+      <div>
+        
+        <p>Artists: {{range .Artists}} {{.Name}} {{end}}</p>
+        <p>Album: {{.Album.Name}}</p>
+        <p>Song:<a href={{.PreviewURL}}>{{.Name}}</a></p>
+        <p>ID: {{.ID}}</p>
+        <br />
+      </div>
+    {{end}}
+  {{else}}
+    {{range .Tracks}}
+      <pre>
+  {
+    artists = {{range .Artists}} "{{.Name}}" {{end}}
+    album = "{{.Album.Name}}"
+    >song = "{{.Name}}"
+    track_id = "{{.ID}}"
+    preview_url = "{{.PreviewURL}}"
+  }
+
+      </pre>
+    {{end}}
+  {{end}}
+{{end}}

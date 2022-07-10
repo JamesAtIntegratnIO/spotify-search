@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -19,11 +20,31 @@ import (
 
 type Form struct {
 	Song   string
+	Artist string
 	Format string
 }
 
 var config = *c.SetupConfig()
 var auth = spotifyauth.New(spotifyauth.WithRedirectURL(config.AUTH_URL))
+
+// var tmpl = func() *template.Template {
+// 	t := template.New("")
+// 	err := filepath.Walk("templates/", func(path string, info os.FileInfo, err error) error {
+// 		if strings.Contains(path, ".html") {
+// 			fmt.Println(path)
+// 			_, err = t.ParseFiles(path)
+// 			if err != nil {
+// 				fmt.Println(err)
+// 			}
+// 		}
+// 		return err
+// 	})
+
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	return t
+// }()
 
 func main() {
 
@@ -134,12 +155,12 @@ func main() {
 					if cCtx.NumFlags() > 0 {
 						port = cCtx.Int("port")
 					}
-					tmpl := template.Must(template.ParseFiles("templates/index.html"))
+					tmpl := ParseTemplates()
 					fmt.Printf("Web server running at: http://localhost:%d", port)
 					http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 						if r.Method != http.MethodPost {
-							tmpl.Execute(w, nil)
+							tmpl.ExecuteTemplate(w, "main", nil)
 							return
 						}
 
@@ -153,11 +174,33 @@ func main() {
 						}
 						format, _ := strconv.ParseBool(details.Format)
 
-						tmpl.Execute(w, struct {
+						tmpl.ExecuteTemplate(w, "main", struct {
 							Success bool
 							Format  bool
 							Tracks  []Track
 						}{true, format, tracks})
+					})
+					http.HandleFunc("/toptracks", func(w http.ResponseWriter, r *http.Request) {
+						if r.Method != http.MethodPost {
+							tmpl.ExecuteTemplate(w, "top_tracks", nil)
+							return
+						}
+						details := Form{
+							Artist: r.FormValue("artist"),
+							Format: r.FormValue("format"),
+						}
+						topTracks, err := getTopTracksByArtist(details.Artist)
+						if err != nil {
+							fmt.Println(err)
+						}
+						format, _ := strconv.ParseBool(details.Format)
+
+						tmpl.ExecuteTemplate(w, "top_tracks", struct {
+							Success bool
+							Format  bool
+							Tracks  []Track
+						}{true, format, topTracks})
+
 					})
 					http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 
@@ -172,4 +215,28 @@ func main() {
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
 	}
+}
+
+type Page struct {
+	Title string
+}
+
+func ParseTemplates() *template.Template {
+	templ := template.New("")
+	err := filepath.Walk("./templates", func(path string, info os.FileInfo, err error) error {
+		if strings.Contains(path, ".html") {
+			_, err = templ.ParseFiles(path)
+			if err != nil {
+				log.Println("Parse error", err)
+			}
+		}
+
+		return err
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	return templ
 }
