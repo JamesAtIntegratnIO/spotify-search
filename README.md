@@ -25,13 +25,18 @@ I've been playing with managing my spotify playlists in terraform. Start out as 
   * Add the redirect URI as the AUTH_URL
 
 ## Usage
-There is only one command right now. Others could easily be added, but this is the MVP that does what I need to start.
 
 Install it, then use the command as seen below.
 * Copy the `config.yaml.example` to ~`/.config/spotify-search/config.yaml`
 * Update all your values
 * `go install github.com/jamesatintegratnio/spotify-search
 
+## docker container
+* Build the container
+  * `docker build . -t spotify-search`
+* Run the container
+  * `docker run -p 8080:8080 -e SPOTIFY_ID=YourSuperSecretID -e SPOTIFY_SECRET=YourSuperSecretSecret -e AUTH_URL=http://localhost:27228/spotify_callback spotify-search
+* Open in your browser and have fun
 ### Help text
 ```
 NAME:

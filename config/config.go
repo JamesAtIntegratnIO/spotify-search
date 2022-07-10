@@ -18,9 +18,17 @@ func SetupConfig() *Configuration {
 	viper.AddConfigPath("$HOME/.config/spotify-search/")
 	viper.AutomaticEnv()
 	viper.SetConfigType("yml")
+	viper.BindEnv("SPOTIFY_ID")
+	viper.BindEnv("SPOTIFY_SECRET")
+	viper.BindEnv("AUTH_URL")
 	var configuration Configuration
 	if err := viper.ReadInConfig(); err != nil {
-		fmt.Printf("error reading config file, %s", err)
+		switch err.(type) {
+		default:
+			panic(fmt.Errorf("Fatal error loading config file: %s \n", err))
+		case viper.ConfigFileNotFoundError:
+			fmt.Println("No config file found. Using defaults and environment variables")
+		}
 	}
 
 	err := viper.Unmarshal(&configuration)
