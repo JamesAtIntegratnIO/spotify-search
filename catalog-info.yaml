@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: spotify-search
+  annotations:
+    github.com/project-slug: JamesAtIntegratnIO/spotify-search
+spec:
+  type: other
+  lifecycle: unknown
+  owner: James D.
