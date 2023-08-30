@@ -5,6 +5,6 @@ metadata:
   annotations:
     github.com/project-slug: JamesAtIntegratnIO/spotify-search
 spec:
-  type: other
-  lifecycle: unknown
-  owner: James D.
+  type: service
+  lifecycle: experimental
+  owner: user:default/jamesatintegratnio
